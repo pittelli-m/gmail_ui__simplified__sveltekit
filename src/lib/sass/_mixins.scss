@@ -1,0 +1,41 @@
+/* 
+Desktop             > 1360px
+Laptop 				<= 1360px
+Tablet-Landscape	<= 1040px
+Tablet-Vertical     <= 848px
+Mobile-landscape    <=672px
+Mobile-Vertical     <=480px
+*/
+
+@mixin respond($breakpoint) {
+	@if $breakpoint == laptop {
+		@media only screen and (max-width: 85em) {
+			@content;
+		}
+	}
+	@if $breakpoint == small-laptop {
+		@media only screen and (max-width: 80em) {
+			@content;
+		}
+	}
+	@if $breakpoint == tablet-landscape {
+		@media only screen and (max-width: 65em) {
+			@content;
+		}
+	}
+	@if $breakpoint == tablet-portrait {
+		@media only screen and (max-width: 53em) {
+			@content;
+		}
+	}
+	@if $breakpoint == mobile-landscape {
+		@media only screen and (max-width: 42em) {
+			@content;
+		}
+	}
+	@if $breakpoint == mobile-portrait {
+		@media only screen and (max-width: 30em) {
+			@content;
+		}
+	}
+}

@@ -1,0 +1,85 @@
+@import "@fontsource/roboto";
+
+:root {
+	--color-primary: #0b57d0;
+	--color-menu-selected: #d3e3fd;
+	--color-write: #c2e7ff;
+	--color-text-main: #202124;
+	--color-text-light: #646665;
+	--color-icon--hover: #e4e4e4;
+	--color-input: #eaf1fb;
+	--color-starred: #f7cb4d;
+	--color-text-selected: #041e49;
+	--color-red: #c5221f;
+	--color-background: #f6f8fc;
+}
+html {
+	font-size: 62.5%;
+} /*10px*/
+* {
+	&,
+	&::after,
+	&::before {
+		margin: 0;
+		padding: 0;
+		box-sizing: inherit;
+		backface-visibility: hidden;
+	}
+}
+a {
+	&,
+	&:hover,
+	&:visited,
+	&:active,
+	&:link {
+		text-decoration: none;
+		cursor: pointer;
+	}
+	&:link,
+	&:visited {
+		color: inherit;
+	}
+}
+input:focus,
+select:focus,
+option:focus {
+	outline: none;
+}
+button {
+	user-select: none;
+	cursor: pointer;
+	&:disabled {
+		cursor: not-allowed;
+	}
+}
+body {
+	font-family: "Roboto", sans-serif;
+	background-color: var(--color-background);
+	color: var(--color-text-main);
+	box-sizing: border-box;
+	font-size: 1.4rem;
+}
+.icon-box {
+	cursor: pointer;
+	height: 3.6rem;
+	width: 3.6rem;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: none;
+	background-color: transparent;
+	transition: all 0.2s ease-in-out;
+	user-select: none;
+	&:hover {
+		background-color: var(--color-icon--hover);
+	}
+	&--lg {
+		height: 4.4rem;
+		width: 4.4rem;
+	}
+	&--md {
+		height: 3.6rem;
+		width: 3.6rem;
+	}
+}
