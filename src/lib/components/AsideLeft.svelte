@@ -1,6 +1,6 @@
 <script>
+	import appState from "../../stores/appState";
 	let isOpen = true;
-	let selected = "inbox";
 	import Edit from "../../assets/icons/edit.svg";
 	import Inbox from "../../assets/icons/inbox.svg";
 	import InboxSelected from "../../assets/icons/inbox--selected.svg";
@@ -14,39 +14,41 @@
 	import SentSelected from "../../assets/icons/sent--selected.svg";
 	import Expand from "../../assets/icons/chevron-down.svg";
 	import MdAdd from 'svelte-icons/md/MdAdd.svelte'
-	
+
 </script>
 
 
 <aside class={`aside--left ${isOpen && "aside--left--open"}`}>
 	<div class="aside--left__btn-box">
-		<button class="aside--left__btn"><img src={Edit} alt=""/> Scrivi </button>
+		<button class="aside--left__btn" on:click={()=> $appState.isWriting=true}><img src={Edit} alt=""/> Scrivi </button>
 	</div>
 	<div class="aside--left__menu">
-		<div class={`aside--left__menu__item ${selected === "inbox" ? "aside--left__menu__item--selected" : "" }`} id="inbox" on:click={(()=>selected="inbox")()}>
-			<img src={selected === "inbox" ? InboxSelected : Inbox} alt=""/>
+		<a class={`aside--left__menu__item ${$appState.menuSelected === "inbox" ? "aside--left__menu__item--selected" : "" }`} id="inbox" on:click={()=>$appState.menuSelected="inbox"} href="/">
+			<img src={$appState.menuSelected === "inbox" ? InboxSelected : Inbox} alt=""/>
 			<h4>Posta in Arrivo</h4>
-			<p>10</p>
-		</div>
-		<div class={`aside--left__menu__item ${selected === "starred" ? "aside--left__menu__item--selected" : "" }`} id="starred" on:click={(()=>selected="starred")()}>
-			<img src={selected === "starred" ? StarSelected : Star} alt=""/>
+			<p>{$appState.allMail.length>0 ? $appState.allMail.length : ""}</p>
+		</a>
+		<a class={`aside--left__menu__item ${$appState.menuSelected === "starred" ? "aside--left__menu__item--selected" : "" }`} id="starred" on:click={()=>$appState.menuSelected="starred"} href="/starred">
+			<img src={$appState.menuSelected === "starred" ? StarSelected : Star} alt=""/>
 			<h4>Speciali</h4>
+			<p>{$appState.starred.length>0 ? $appState.starred.length : ""}</p>
 			
-		</div>	
-		<div class={`aside--left__menu__item ${selected === "snoozed" ? "aside--left__menu__item--selected" : "" }`} id="snoozed" on:click={(()=>selected="snoozed")()}>
-			<img src={selected === "snoozed" ? SnoozedSelected : Snoozed} alt=""/>
+		</a>	
+		<a class={`aside--left__menu__item ${$appState.menuSelected === "snoozed" ? "aside--left__menu__item--selected" : "" }`} id="snoozed" on:click={()=>$appState.menuSelected="snoozed"} href="/snoozed">
+			<img src={$appState.menuSelected === "snoozed" ? SnoozedSelected : Snoozed} alt=""/>
 			<h4>Posticipati</h4>
-		</div>
-		<div class={`aside--left__menu__item ${selected === "sent" ? "aside--left__menu__item--selected" : "" }`} id="sent" on:click={(()=>selected="sent")()}>
-			<img src={selected === "sent" ? SentSelected : Sent} alt=""/>
+		</a>
+		<a class={`aside--left__menu__item ${$appState.menuSelected === "sent" ? "aside--left__menu__item--selected" : "" }`} id="sent" on:click={()=>$appState.menuSelected="sent"} href="/sent">
+			<img src={$appState.menuSelected === "sent" ? SentSelected : Sent} alt=""/>
 			<h4>Inviati</h4>
+			<p>{$appState.sent.length > 0? $appState.sent.length : ""}</p>
 			
-		</div>
-		<div class={`aside--left__menu__item ${selected === "drafts" ? "aside--left__menu__item--selected" : "" }`} id="drafts" on:click={(()=>selected="drafts")()}>
-			<img src={selected === "drafts" ? DraftSelected : Draft} alt=""/>
+		</a>
+		<a class={`aside--left__menu__item ${$appState.menuSelected === "drafts" ? "aside--left__menu__item--selected" : "" }`} id="drafts" on:click={()=>$appState.menuSelected="drafts"} href="/drafts">
+			<img src={$appState.menuSelected === "drafts" ? DraftSelected : Draft} alt=""/>
 			<h4>Bozze</h4>
-			<p></p>
-		</div>
+			<p>{$appState.drafts.length > 0 ? $appState.drafts.length : ""}</p>
+		</a>
 		<div class="aside--left__menu__item" id="altro">
 			<img src={Expand} alt=""/>
 			<h4>Altro</h4>
@@ -117,6 +119,7 @@
 					border-radius: 0 50rem 50rem 0;
 					color: var(--color-text-light);
 					user-select: none;
+					position: relative;
 					
 
 					img{
@@ -129,6 +132,10 @@
 					 }
 					 p{
 						font-size: 1.2rem;
+						position: absolute;
+						left: 90%;
+						top: 50%;
+						transform: translate(-50%,-50%);
 					 }
 
 					 &:hover{

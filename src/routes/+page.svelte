@@ -1,12 +1,10 @@
+<script>
+import EmailList from "$lib/components/EmailList.svelte";
+import appState from "../stores/appState";
 
-<div class="content">
-	
-</div>
+</script>
 
-<style lang="scss">
-	.content{
-		background-color: white;
-		border-radius: 15px;
-	}
+<EmailList items={$appState.allMail}/>
 
-</style>
+
+<style lang="scss"></style>

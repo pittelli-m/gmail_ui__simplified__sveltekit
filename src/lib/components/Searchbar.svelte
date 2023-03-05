@@ -1,17 +1,18 @@
 <script>
-	let term = "";
+	import appState from "../../stores/appState";
 	let focused = false
 	const onFocus = () => focused = true;
 	const onBlur =() => focused =false;
 	import MdSearch from 'svelte-icons/md/MdSearch.svelte'
 	import MdTune from 'svelte-icons/md/MdTune.svelte'
+
 </script>
 
 <div class={`search__input__item ${focused && "search__input__item--focused"}`}>
 	<div class="search__input__icon-box icon-box">
 		<MdSearch/>
 	</div>
-	<input bind:value={term} type="search" class="search__input__field" on:focus={onFocus} on:blur={onBlur}/>
+	<input bind:value={$appState.searchTerm} type="text" class="search__input__field" on:focus={onFocus} on:blur={onBlur}/>
 	<div class="search__input__icon-box icon-box">
 		<MdTune/>
 	</div>
