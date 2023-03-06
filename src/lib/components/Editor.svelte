@@ -1,26 +1,52 @@
 <script>
 	let isOpen = true;
+	let focusShow = false;
 	import appState from "../../stores/appState";
 	import Close from "../../assets/icons/close.svg";
 	import Minimize from "../../assets/icons/minimize.svg";
-	let newMail = {
-		to:"",
+	import Dots from "../../assets/icons/more-vert.svg"
+	import Lock from "../../assets/icons/lock-clock.svg"
+	import Attachment from "../../assets/icons/attachment.svg"
+	import Link from "../../assets/icons/link.svg"
+	import Image from "../../assets/icons/image.svg"
+	import Color from "../../assets/icons/color-text.svg"
+	import Drive from "../../assets/icons/drive.svg"
+	import Sign from "../../assets/icons/pen.svg"
+	import Smile from "../../assets/icons/mood.svg"
+	import Trash from "../../assets/icons/trash.svg"
+	import MdArrowDropDown from 'svelte-icons/md/MdArrowDropDown.svelte'
+
+
+	 let newMail = $appState.openDraft || {
+		to:"",	
 		object:"",
 		body:"",
 		date: new Date(),
 		isDraft: true,
+		isSent: false,
+		files:{},
+		id: Math.round(Math.random()*99999)
 	}
-	;
 
 	$:if (newMail.body || newMail.object || newMail.to) $appState.isDirty=true
-	$:console.log($appState.drafts)
-	
 
 	const handleCloseEditor = () => {
+		if ($appState.isDirty && newMail.isDraft === true && newMail.id !== $appState.openDraft?.id){
+			$appState.drafts = [...$appState.drafts, newMail]
+			$appState.isWriting = false
+			$appState.isDirty=false
+			$appState.openDraft =null
+			}
+		else if($appState.isDirty && newMail.isDraft === true)
+		{	
+			let original = $appState.drafts.findIndex(el => el.id === newMail.id)
+			$appState.drafts.splice(original, 1, newMail)
+			$appState.drafts = [...$appState.drafts]
+			$appState.isWriting = false
+			$appState.isDirty=false
+			$appState.openDraft = null
+		}
 		
-		if ($appState.isDirty && newMail.isDraft === true) $appState.drafts = [...$appState.drafts, newMail]
-		$appState.isWriting = false
-		$appState.isDirty=false
 
 	}
 
@@ -28,9 +54,35 @@
 		e.preventDefault();
 		if(!newMail.body || !newMail.to) return
 		$appState.sent.push({...newMail, isDraft:false});
-		setTimeout(()=> {$appState.isWriting = false;$appState.isDirty=false; }, 1000)	
+
+		setTimeout(()=> {
+			$appState.isWriting = false;
+			$appState.isDirty=false;
+			$appState.openDraft = null;
+			handleClear(newMail.id)
+		 }, 1000)	
+
+		 
 		
 	}
+
+	const handleDelete = () => {
+		let target = $appState.drafts.findIndex(el => el.id === newMail.id);
+		$appState.drafts.splice(target, 1)
+		$appState.drafts = [...$appState.drafts]
+		$appState.isWriting = false
+		$appState.isDirty=false
+
+	}
+
+	const onFocus = () => focusShow = true;
+	const onBlur =() => focusShow =false;
+
+	const handleClear = (id) => {
+		let target = $appState.drafts.findIndex(el => el.id === id);
+		$appState.drafts.splice(target, 1)
+		$appState.drafts = [...$appState.drafts]
+	}	
 	
 </script>
 <form class={`editor ${isOpen && "editor--open"}`} on:submit = {(e) => handleSubmit(e)}>
@@ -48,23 +100,71 @@
 		</div>
 	</div>
 {#if isOpen }
-<div class="editor__input__item">
-	<input type="text" class="editor__input__field" bind:value={newMail.to}>
+<div class="editor__input__item__wrapper">
+	<div class="editor__input__item">
+	<div class={ `editor__input__focus-show ${ focusShow && "editor__input__focus-show--to"}`}> <span>A</span></div>
+	<input type="text" class= "editor__input__field" bind:value={newMail.to} on:focus={onFocus} on:blur={onBlur} placeholder={ focusShow? "" : "Destinatari"}>
+	<div class={ `editor__input__focus-show ${ focusShow && "editor__input__focus-show--to"}`}> <p>Cc Ccn</p> </div>
 </div>
-<div class="editor__input__item">
-	<input type="text" class="editor__input__field" bind:value={newMail.object}>
+</div>
+<div class="editor__input__item__wrapper">
+	<div class="editor__input__item">
+	<input type="text" class=" editor__input__field" bind:value={newMail.object} placeholder="Oggetto" >
+</div>
 </div>
 <div class="editor__textarea">
 	<textarea name="" id="" bind:value={newMail.body}></textarea>
 	<!-- TODO text editor w/ iframe -->
 </div>
 <div class="editor__footer">
-	<button type="submit">Send</button>
+	<button type="submit" class="editor__submit">
+		<div class="editor__submit--left">Invia</div>
+		<div class="editor__submit--right">
+			<MdArrowDropDown/>
+		</div>
+	</button>
+
+	<div class="editor__footer__btns__container">
+		<button type="button" class="icon-box icon-box--square"> 
+			<img src={Color} alt="">
+		</button>
+		<div class="icon-box icon-box--square">
+			<label for="attachmentButton" class="editor__footer__attachment-upload__label">
+				<img src={Attachment} alt="">
+			</label>
+			<input class="editor__footer__attachment-upload" type="file" accept="image/*,.doc,.docx,.xml,.pdf" id="attachmentButton" name="attachment" multiple bind:files={newMail.files}>
+		</div>
+		<button type="button" class="icon-box icon-box--square"> 
+			<img src={Link} alt="">
+		</button>
+		<button type="button" class="icon-box icon-box--square"> 
+			<img src={Smile} alt="">
+		</button>
+		<button type="button" class="icon-box icon-box--square"> 
+			<img src={Drive} alt="">
+		</button>
+		<button type="button" class="icon-box icon-box--square"> 
+			<img src={Image} alt="">
+		</button>
+		<button type="button" class="icon-box icon-box--square"> 
+			<img src={Lock} alt="">
+		</button>
+		<button type="button" class="icon-box icon-box--square"> 
+			<img src={Sign} alt="">
+		</button>
+		<button type="button" class="icon-box icon-box--square"> 
+			<img src={Dots} alt="">
+		</button>
+	</div>
+	<button type="button" class="icon-box icon-box--square" on:click={handleDelete}> 
+		<img src={Trash} alt="">
+	</button>
 </div>
 {/if}
 </form>
 
 <style lang="scss">
+@import "@fontsource/lexend-deca";
 	.editor{
 
 			&--open{
@@ -80,13 +180,14 @@
 			height: 4rem;
 			display: flex;
 			justify-content: space-between;
-			background-color: var(--color-input);
+			background-color: var(--color-editor-header);
 			border-radius: 1.2rem 1.2rem 0 0;
 
 			h4 {
 				color: var(--color-text-selected);
 				font-weight: 500;
 				margin-right: 2rem;
+				user-select: none;
 			}
 
 			.btn-box {
@@ -103,17 +204,50 @@
 		}
 		&__input{
 			&__item{	
-				border: 2px solid red;
 				width: 100%;
+				display: flex;
+				align-items: center;
+				border-bottom: .01rem solid rgba(0,0,0,.2);
+				font-family: "Lexend Deca", sans-serif;
+				&__wrapper{
+				width: 100%;
+				background: #fff;
+				padding: 0 1rem;
 			}
+			}
+			
 			&__field{
 				height: 4rem;
 				width: 100%;
+				border: none;
+				padding: .4rem;
+				font-family: "Roboto", sans-serif;
+			
+
+				&::placeholder{
+					font-size: inherit;
+					font-weight: 500;
+					font-family: inherit;
+
+				}
+			}
+			&__focus-show{
+			display: none;
+				&--to {
+					display: flex;
+					align-items: center;
+					flex-wrap: nowrap;
+					p {
+						width: 5rem;
+					}
+					span, p {
+						cursor: pointer;
+					}
+				}
 			}
 		}
 		&__textarea{
 			flex: 1;
-			border: 2px solid yellow;
 			outline: none;
 			textarea{
 				height: 100%;
@@ -127,16 +261,76 @@
 				font-family: inherit;
 				font-size: inherit;
 				padding: 1rem;
-
-    resize: none;
+    			resize: none;
 			}
 		}
 		&__footer{
 			height: 5rem;
-			border: 2px solid black;
-		}
+			display: flex;
+			align-items: center;
+			padding: 0 1.4rem;
+			gap: 1.6rem;
+			background-color: #fff;
+			.icon-box{
+					width: 2.4rem;
+					height: 2.4rem;
+					img{
+						height: 2rem;
+						width: 2rem;
+					}
+				}
 
+			&__btns__container{
+				display: flex;
+				align-items: center;
+				flex: 1;
+				gap: .4rem
+			}
+
+			&__attachment-upload{
+			display: none;
+			&__label{
+				cursor: pointer;
+			}
+		}
+		}
+		&__submit{
+			width: 10rem;
+			height: 3.6rem;
+			border-radius: 300rem;
+			display: flex;
+			align-items: center;
+			background-color: var(--color-primary);
+			color: #fff;
+			border: none;
+			&:hover{
+			background-image: linear-gradient(rgba(255,255,255,0.2) 0 0);
+		}
+		
+			&--left{
+				flex:.7;
+				border-right: .01rem solid #000;
+				height: 100%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-weight: 600;
+			}
+			&--right{
+				flex:.3;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				:global(svg){
+					height: 2rem;
+					width: 2rem;
+				}
+			}
+			
+		}
+		
 	}
+	
 </style>
 
 

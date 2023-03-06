@@ -1,11 +1,7 @@
 <script>
 	import EmailList from "$lib/components/EmailList.svelte";
-import appState from "../../stores/appState";
-
-let starred = $appState.allMail.filter(el => el.isStarred === true)
-
-$: $appState.starred = starred
+	import appState from "../../stores/appState";
 
 </script>
 
-<EmailList items={$appState.starred}/>
+<EmailList items={$appState.starred} isDraggable={true}/>

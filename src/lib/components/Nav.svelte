@@ -6,7 +6,7 @@
 	import MdSettings from 'svelte-icons/md/MdSettings.svelte'
 	import MdApps from 'svelte-icons/md/MdApps.svelte'
 	import GmailLogo from "../../assets/icons/gmail.svg"
-	import "@fontsource/lexend-deca"
+	
 
 	let isOpen = true
 	const handleToggle =  () => isOpen = !isOpen
@@ -34,6 +34,8 @@
 </nav>
 
 <style lang="scss">
+	@import "@fontsource/lexend-deca";
+	
 	.header__nav{
 		padding: 1rem;
 		padding-right: 1.6rem;
