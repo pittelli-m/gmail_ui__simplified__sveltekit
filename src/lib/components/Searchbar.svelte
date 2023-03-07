@@ -12,7 +12,7 @@
 	<div class="search__input__icon-box icon-box">
 		<MdSearch/>
 	</div>
-	<input bind:value={$appState.searchTerm} type="text" class="search__input__field" on:focus={onFocus} on:blur={onBlur}/>
+	<input bind:value={$appState.searchTerm} type="text" class="search__input__field" on:focus={onFocus} on:blur={onBlur} placeholder={!focused ? "Cerca nella posta" : ""}/>
 	<div class="search__input__icon-box icon-box">
 		<MdTune/>
 	</div>

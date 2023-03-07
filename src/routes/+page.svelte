@@ -2,12 +2,11 @@
 import EmailList from "$lib/components/EmailList.svelte";
 import appState from "../stores/appState";
 
-let data = $appState.sortByDate($appState.allMail)
 
 </script>
 
 {#if $appState.inboxShown === "inbox"}
-<EmailList items={data}/>
+<EmailList items={$appState.allMail}/>
 {:else if $appState.inboxShown === "promo"}
 <div class="empty-inbox__container">
 	<div class="empty-inbox__msg">

@@ -15,6 +15,8 @@
 	import Expand from "../../assets/icons/chevron-down.svg";
 	import MdAdd from 'svelte-icons/md/MdAdd.svelte'
 
+	// TODO ADD TOREAD ARRRAY
+
 </script>
 
 
@@ -23,28 +25,28 @@
 		<button class="aside--left__btn" on:click={()=> $appState.isWriting=true}><img src={Edit} alt=""/> Scrivi </button>
 	</div>
 	<div class="aside--left__menu">
-		<a class={`aside--left__menu__item ${$appState.menuSelected === "inbox" ? "aside--left__menu__item--selected" : "" }`} id="inbox" on:click={()=>$appState.menuSelected="inbox"} href="/">
+		<a class={`aside--left__menu__item ${$appState.menuSelected === "inbox" ? "aside--left__menu__item--selected" : "" }`} id="inbox" on:click={()=>{$appState.menuSelected="inbox"; $appState.displayedMail=null}} href="/">
 			<img src={$appState.menuSelected === "inbox" ? InboxSelected : Inbox} alt=""/>
 			<h4>Posta in Arrivo</h4>
-			<p>{$appState.allMail.length>0 ? $appState.allMail.length : ""}</p>
+			<p>{$appState.allMail.map(el => el.isRead === false).length>0 ?$appState.allMail.map(el => el.isRead === false).length : ""}</p>
 		</a>
-		<a class={`aside--left__menu__item ${$appState.menuSelected === "starred" ? "aside--left__menu__item--selected" : "" }`} id="starred" on:click={()=>$appState.menuSelected="starred"} href="/starred">
+		<a class={`aside--left__menu__item ${$appState.menuSelected === "starred" ? "aside--left__menu__item--selected" : "" }`} id="starred" on:click={()=>{$appState.menuSelected="starred"; $appState.displayedMail=null}} href="/starred">
 			<img src={$appState.menuSelected === "starred" ? StarSelected : Star} alt=""/>
 			<h4>Speciali</h4>
 			<p>{$appState.starred.length>0 ? $appState.starred.length : ""}</p>
 			
 		</a>	
-		<a class={`aside--left__menu__item ${$appState.menuSelected === "snoozed" ? "aside--left__menu__item--selected" : "" }`} id="snoozed" on:click={()=>$appState.menuSelected="snoozed"} href="/snoozed">
+		<a class={`aside--left__menu__item ${$appState.menuSelected === "snoozed" ? "aside--left__menu__item--selected" : "" }`} id="snoozed" on:click={()=>{$appState.menuSelected="snoozed"; $appState.displayedMail=null}} href="/snoozed">
 			<img src={$appState.menuSelected === "snoozed" ? SnoozedSelected : Snoozed} alt=""/>
 			<h4>Posticipati</h4>
 		</a>
-		<a class={`aside--left__menu__item ${$appState.menuSelected === "sent" ? "aside--left__menu__item--selected" : "" }`} id="sent" on:click={()=>$appState.menuSelected="sent"} href="/sent">
+		<a class={`aside--left__menu__item ${$appState.menuSelected === "sent" ? "aside--left__menu__item--selected" : "" }`} id="sent" on:click={()=>{$appState.menuSelected="sent"; $appState.displayedMail=null}} href="/sent">
 			<img src={$appState.menuSelected === "sent" ? SentSelected : Sent} alt=""/>
 			<h4>Inviati</h4>
 			<p>{$appState.sent.length > 0? $appState.sent.length : ""}</p>
 			
 		</a>
-		<a class={`aside--left__menu__item ${$appState.menuSelected === "drafts" ? "aside--left__menu__item--selected" : "" }`} id="drafts" on:click={()=>$appState.menuSelected="drafts"} href="/drafts">
+		<a class={`aside--left__menu__item ${$appState.menuSelected === "drafts" ? "aside--left__menu__item--selected" : "" }`} id="drafts" on:click={()=>{$appState.menuSelected="drafts"; $appState.displayedMail=null}} href="/drafts">
 			<img src={$appState.menuSelected === "drafts" ? DraftSelected : Draft} alt=""/>
 			<h4>Bozze</h4>
 			<p>{$appState.drafts.length > 0 ? $appState.drafts.length : ""}</p>

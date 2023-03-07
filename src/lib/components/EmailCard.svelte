@@ -3,6 +3,7 @@
 	export let content = {};
 	export let draggable;
 	export let itemID;
+	let items;
 
 	let isSelected = false;
 	let isLabeled = false;
@@ -32,13 +33,24 @@
 		let id = itemID;
 
 		$appState.displayedMail = $appState.allMail.find( el => el.id === id);
-		console.log($appState.displayedMail)
 
 		
 		if (!content.isDraft) return
 
 		$appState.isWriting = true
 		$appState.openDraft = content
+	}
+
+
+	const handleDelete = () => {
+
+		if (!$appState.allMail.find(el => el.id === itemID)) return 
+			
+		let target = $appState.allMail.findIndex(el => el.id === itemID)
+
+		$appState.allMail.splice(target, 1);
+
+		$appState.allMail = [...$appState.allMail ]
 	}
 
 </script>
@@ -67,7 +79,7 @@
 			<button class=icon-box>
 				<img src={Archive} alt="" class="icon-img">		
 			</button>
-			<button class=icon-box>
+			<button class=icon-box on:click={handleDelete}>
 				<img src={Trash} alt="" class="icon-img">
 			</button>
 			<button class=icon-box>

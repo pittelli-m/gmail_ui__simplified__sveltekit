@@ -15,6 +15,7 @@
 	import Smile from "../../assets/icons/mood.svg"
 	import Trash from "../../assets/icons/trash.svg"
 	import MdArrowDropDown from 'svelte-icons/md/MdArrowDropDown.svelte'
+	import MdClose from 'svelte-icons/md/MdClose.svelte'
 
 
 	 let newMail = $appState.openDraft || {
@@ -47,7 +48,8 @@
 			$appState.openDraft = null
 		}
 		
-
+		$appState.isWriting = false;
+		console.log(newMail.files)
 	}
 
 	const handleSubmit = e => {
@@ -61,11 +63,7 @@
 			$appState.openDraft = null;
 			handleClear(newMail.id)
 		 }, 1000)	
-
-		 
-		
 	}
-
 	const handleDelete = () => {
 		let target = $appState.drafts.findIndex(el => el.id === newMail.id);
 		$appState.drafts.splice(target, 1)
@@ -114,6 +112,19 @@
 </div>
 <div class="editor__textarea">
 	<textarea name="" id="" bind:value={newMail.body}></textarea>
+	{#if newMail.files.length > 0}
+		<div class="editor__attachments__container">
+			{#each newMail.files as file}
+			<div class="editor__attachments__item">
+				<p>{file.name}</p>
+				<button type="button" class="icon-box icon-box--square"> 
+					<MdClose/>
+				</button>
+			</div>	
+			
+			{/each}
+		</div>
+	{/if}
 	<!-- TODO text editor w/ iframe -->
 </div>
 <div class="editor__footer">
@@ -249,6 +260,7 @@
 		&__textarea{
 			flex: 1;
 			outline: none;
+			position: relative;
 			textarea{
 				height: 100%;
 				width: 100%;
@@ -328,6 +340,33 @@
 			}
 			
 		}
+		&__attachments{
+			&__container{
+			position: absolute;
+			bottom: 0;
+			min-height: 2rem;
+			padding: 1rem;
+		}
+		&__item{
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			cursor: pointer;
+			color: var(--color-primary);
+			text-decoration: underline;
+			background-color: var(--color-input);
+			padding-left: 1rem;
+			margin-bottom: .2rem;
+
+			button{
+				:global(svg){
+					height: 1.4rem;
+					width: 1.4rem;
+					fill: var(--color-primary);
+				}
+			}
+		}
+	}
 		
 	}
 	

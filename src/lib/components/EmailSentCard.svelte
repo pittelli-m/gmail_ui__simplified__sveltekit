@@ -31,6 +31,17 @@
 	
 	}
 
+	const handleDelete = () => {
+
+		if (!$appState.sent.find(el => el.id === itemID)) return 
+			
+		let target = $appState.sent.findIndex(el => el.id === itemID)
+
+		$appState.sent.splice(target, 1);
+
+		$appState.sent = [...$appState.sent ]
+}
+
 </script>
 <article class={`email__card ${isSelected && "email__card--selected"}`} on:click|stopPropagation={(e) => handleOpen(e)} on:mouseenter={() => isHovered = true} on:mouseleave={()=> isHovered=false}>
 	<div class="email__card__left">
@@ -55,7 +66,7 @@
 			<button class=icon-box>
 				<img src={Archive} alt="" class="icon-img">		
 			</button>
-			<button class=icon-box>
+			<button class=icon-box on:click={handleDelete}>
 				<img src={Trash} alt="" class="icon-img">
 			</button>
 			<button class=icon-box>
