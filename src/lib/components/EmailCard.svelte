@@ -21,7 +21,7 @@
 
 	const handleStar = () => {
 		content.isStarred = !content.isStarred
-		$appState.starred = $appState.allMail.filter(el => el.isStarred === true)
+		$appState.starred = $appState.allMail.filter(el => el.isStarred === true);
 		
 	}	
 
@@ -38,19 +38,23 @@
 		if (!content.isDraft) return
 
 		$appState.isWriting = true
-		$appState.openDraft = content
+		$appState.openDraft = content;
 	}
 
 
 	const handleDelete = () => {
-
-		if (!$appState.allMail.find(el => el.id === itemID)) return 
+		let value;
+		if ( $appState.allMail.find(el => el.id === itemID)){ items = $appState.allMail;  value = 1}
+		if ($appState.drafts.find(el => el.id === itemID)) {items = $appState.drafts; value = 2}
 			
-		let target = $appState.allMail.findIndex(el => el.id === itemID)
+		let target = items.findIndex(el => el.id === itemID)
+		items.splice(target, 1);
 
-		$appState.allMail.splice(target, 1);
+		value === 1  ? $appState.allMail = [...items] : $appState.drafts = [...items]
+		$appState.allMailSorted = $appState.allMail.slice();
+		$appState.draftsSorted = $appState.drafts.slice();
+		
 
-		$appState.allMail = [...$appState.allMail ]
 	}
 
 </script>

@@ -40,6 +40,9 @@
 		$appState.sent.splice(target, 1);
 
 		$appState.sent = [...$appState.sent ]
+		$appState.sentSorted = $appState.sent.slice();
+		
+		
 }
 
 </script>

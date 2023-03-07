@@ -12,9 +12,7 @@
 	let checked = false
 
 	const handleSort = () => {
-		if ($appState.sortOrder === null) $appState.sortOrder = "asc"
-		else if ($appState.sortOrder === "asc") $appState.sortOrder = "desc"
-		else if ($appState.sortOrder === "desc") $appState.sortOrder = null
+	 $appState.isSorted = !$appState.isSorted
 	}
 </script>
 

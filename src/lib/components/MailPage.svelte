@@ -26,7 +26,8 @@
 
 	const handleStar = () => {
 		mail.isStarred = !mail.isStarred
-		$appState.starred = $appState.allMail.filter(el => el.isStarred === true)
+		$appState.starred = $appState.allMail.filter(el => el.isStarred === true);
+		
 		
 	}	
 
@@ -35,16 +36,17 @@
 			items = $appState.allMail;
 		}
 		if( $appState.sent.find(el => el.id === mail.id)){
-			items = $appState.sent
+			items = $appState.sent;
 		}
 
-		let target = items.findIndex(el => el.id === mail.id)
+		let target = items.findIndex(el => el.id === mail.id);
 		
 
-		items.splice(target, 1)
-		items = [...items]
+		items.splice(target, 1);
+		items = [...items];
 
-		$appState.displayedMail = null
+		$appState.displayedMail = null;
+		
 
 	}
 </script>

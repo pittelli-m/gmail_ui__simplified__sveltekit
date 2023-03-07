@@ -2,11 +2,13 @@
 import EmailList from "$lib/components/EmailList.svelte";
 import appState from "../stores/appState";
 
-
+$appState.allMailSorted = $appState.sortByDate($appState.allMail.slice());
 </script>
 
-{#if $appState.inboxShown === "inbox"}
-<EmailList items={$appState.allMail}/>
+{#if $appState.inboxShown === "inbox" && !$appState.isSearching}
+<EmailList items={!$appState.isSorted ? $appState.allMail : $appState.allMailSorted}/>
+{:else if $appState.inboxShown === "inbox" && $appState.isSearching}
+<EmailList items={!$appState.isSorted ? $appState.filtered : $appState.filteredSorted}/>
 {:else if $appState.inboxShown === "promo"}
 <div class="empty-inbox__container">
 	<div class="empty-inbox__msg">

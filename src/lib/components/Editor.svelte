@@ -34,42 +34,46 @@
 	const handleCloseEditor = () => {
 		if ($appState.isDirty && newMail.isDraft === true && newMail.id !== $appState.openDraft?.id){
 			$appState.drafts = [...$appState.drafts, newMail]
-			$appState.isWriting = false
-			$appState.isDirty=false
-			$appState.openDraft =null
 			}
 		else if($appState.isDirty && newMail.isDraft === true)
 		{	
 			let original = $appState.drafts.findIndex(el => el.id === newMail.id)
 			$appState.drafts.splice(original, 1, newMail)
 			$appState.drafts = [...$appState.drafts]
-			$appState.isWriting = false
-			$appState.isDirty=false
-			$appState.openDraft = null
 		}
 		
 		$appState.isWriting = false;
-		console.log(newMail.files)
+		$appState.openDraft =null;
+		$appState.isDirty=false;
+		$appState.draftsSorted = $appState.sortByDate($appState.drafts.slice());
+	
 	}
 
 	const handleSubmit = e => {
 		e.preventDefault();
 		if(!newMail.body || !newMail.to) return
 		$appState.sent.push({...newMail, isDraft:false});
+		$appState.sentSorted = $appState.sortByDate($appState.sent.slice());
+		
+		
 
 		setTimeout(()=> {
 			$appState.isWriting = false;
 			$appState.isDirty=false;
 			$appState.openDraft = null;
-			handleClear(newMail.id)
+			handleClear(newMail.id);
+			
 		 }, 1000)	
 	}
 	const handleDelete = () => {
 		let target = $appState.drafts.findIndex(el => el.id === newMail.id);
-		$appState.drafts.splice(target, 1)
-		$appState.drafts = [...$appState.drafts]
-		$appState.isWriting = false
-		$appState.isDirty=false
+		$appState.drafts.splice(target, 1);
+		$appState.drafts = [...$appState.drafts];
+		$appState.draftsSorted = $appState.sortByDate($appState.drafts.slice());
+		$appState.isWriting = false;
+		$appState.isDirty=false;
+		$appState.openDraft =null;
+		
 
 	}
 
@@ -78,8 +82,10 @@
 
 	const handleClear = (id) => {
 		let target = $appState.drafts.findIndex(el => el.id === id);
-		$appState.drafts.splice(target, 1)
-		$appState.drafts = [...$appState.drafts]
+		$appState.drafts.splice(target, 1);
+		$appState.drafts = [...$appState.drafts];
+		$appState.draftsSorted = $appState.sortByDate($appState.drafts.slice());
+	
 	}	
 	
 </script>

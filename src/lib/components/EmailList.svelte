@@ -9,7 +9,7 @@
 </script>
 <div>
 	
-		{#if items !== $appState.sent}
+		{#if items !== $appState.sent && items !== $appState.sentSorted}
 			{#each items as item}
 			<EmailCard content={item} draggable={isDraggable} itemID={item.id}/>
 			{/each}

@@ -22,24 +22,13 @@ const setMail = async () => {
 };
 
 const sortByDate = data => {
-	let sortedData = data.slice();
+	data = data.sort((a, b) => {
+		const valueA = new Date(a.date).getTime();
+		const valueB = new Date(b.date).getTime();
+		return valueB - valueA;
+	});
 
-	if (appState.sortOrder) {
-		appState.isSorted = false;
-		return sortedData;
-	}
-	if (appState.sortOrder) {
-		appState.isSorted = true;
-		sortedData = sortedData.sort((a, b) => {
-			const valueA = new Date(a.date).getTime();
-			const valueB = new Date(b.date).getTime();
-
-			const reverseOrder = appState.sortOrder === "asc" ? 1 : -1;
-			return (valueA - valueB) * reverseOrder;
-		});
-	}
-	console.log(appState.sortOrder);
-	return sortedData;
+	return data;
 };
 
 const appState = writable({
@@ -47,17 +36,25 @@ const appState = writable({
 	searchTerm: "",
 	isDirty: false,
 	allMail: await setMail(),
+	allMailSorted: [],
 	starred: [],
 	drafts: [],
 	sent: [],
+	starredSorted: [],
+	draftsSorted: [],
+	sentSorted: [],
+	filtered: [],
+	filteredSorted: [],
 	isSorted: false,
-	sortOrder: null,
 	menuSelected: "inbox",
 	id: Math.round(Math.random() * 99999),
 	inboxShown: "inbox",
 	sortByDate,
 	openDraft: null,
 	displayedMail: null,
+	isSearching: false,
 });
 
 export default appState;
+
+// TODO add firebase
