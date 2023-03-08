@@ -19,6 +19,7 @@
 	import MdClose from 'svelte-icons/md/MdClose.svelte';
 	import { update } from "../../stores/appState";
 
+
 	 let newMail = $appState.openDraft || {
 		to:"",	
 		object:"",
@@ -27,10 +28,11 @@
 		isDraft: true,
 		isSent: false,
 		files:{},
-		id: Math.round(Math.random()*99999)
+		id: Math.round(Math.random()*99999),
+		isStarred: false,
 	}
 
-	$:if (newMail.body || newMail.object || newMail.to) $appState.isDirty=true
+	$:if (newMail.body || newMail.object || newMail.to) $appState.isDirty=true;
 
 	const handleCloseEditor = () => {
 		if ($appState.isDirty && newMail.isDraft === true && newMail.id !== $appState.openDraft?.id){
@@ -56,8 +58,11 @@
 	const handleSubmit = e => {
 		e.preventDefault();
 		if(!newMail.body || !newMail.to) return
-		$appState.sent.push({...newMail, isDraft:false});
+		handleSend(newMail.id)
+		$appState.sent.push({...newMail, isDraft:false, isStarred:false});
 		$appState.sentSorted = $appState.sortByDate($appState.sent.slice());
+
+		// $appState.starred = [...$appState.allMail.filter(el => el.isStarred === true), ...$appState.drafts.filter(el => el.isStarred === true)];
 		
 		
 
@@ -65,10 +70,11 @@
 			$appState.isWriting = false;
 			$appState.isDirty=false;
 			$appState.openDraft = null;
+
 			handleClear(newMail.id);
 			update({...$appState});
 			
-		 }, 1000)	
+		 }, 100)	
 	}
 	const handleDelete = () => {
 		let target = $appState.drafts.findIndex(el => el.id === newMail.id);
@@ -93,6 +99,13 @@
 		update({...$appState});
 	}	
 
+	const handleSend = (id) => {
+		let target = $appState.starred.findIndex(el => el.id === id);
+		$appState.starred.splice(target, 1);
+		$appState.starred = [...$appState.starred];
+		$appState.starredSorted = $appState.sortByDate($appState.starred.slice());
+		update({...$appState});
+	}
 
 	let files = {
    	 	accepted: [],
@@ -375,6 +388,7 @@
 			bottom: 0;
 			min-height: 2rem;
 			padding: 1rem;
+			width: 90%;
 		}
 		&__item{
 			display: flex;
@@ -382,7 +396,9 @@
 			justify-content: space-between;
 			cursor: pointer;
 			color: var(--color-primary);
-			text-decoration: underline;
+			font-weight: 600;
+			letter-spacing: .05rem;
+			
 			background-color: var(--color-input);
 			padding-left: 1rem;
 			margin-bottom: .2rem;

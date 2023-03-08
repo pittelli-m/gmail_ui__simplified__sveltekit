@@ -25,7 +25,7 @@
 
 	const handleStar = () => {
 		content.isStarred = !content.isStarred
-		$appState.starred = $appState.allMail.filter(el => el.isStarred === true);
+		$appState.starred = [...$appState.allMail.filter(el => el.isStarred === true), ...$appState.drafts.filter(el => el.isStarred === true)];
 		update({...$appState});
 		
 	}	

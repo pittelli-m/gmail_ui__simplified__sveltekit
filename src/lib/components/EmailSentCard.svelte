@@ -18,19 +18,12 @@
 	import Trash from "../../assets/icons/trash.svg";
 	import Archive from "../../assets/icons/archive.svg";
 
-	const handleStar = () => {
-		content.isStarred = !content.isStarred
-
-		update({...$appState});
-	}
 
 	const handleOpen = (e) => {
-		if(e.target.classList.contains("icon-box") || e.target.classList.contains("icon-img")) return
 
 		let id = itemID;
 
 		$appState.displayedMail = $appState.sent.find( el => el.id === id);
-		console.log($appState.displayedMail)
 		update({...$appState});
 	}
 
