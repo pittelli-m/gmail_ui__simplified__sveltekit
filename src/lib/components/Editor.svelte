@@ -4,19 +4,19 @@
 	import appState from "../../stores/appState";
 	import Close from "../../assets/icons/close.svg";
 	import Minimize from "../../assets/icons/minimize.svg";
-	import Dots from "../../assets/icons/more-vert.svg"
-	import Lock from "../../assets/icons/lock-clock.svg"
-	import Attachment from "../../assets/icons/attachment.svg"
-	import Link from "../../assets/icons/link.svg"
-	import Image from "../../assets/icons/image.svg"
-	import Color from "../../assets/icons/color-text.svg"
-	import Drive from "../../assets/icons/drive.svg"
-	import Sign from "../../assets/icons/pen.svg"
-	import Smile from "../../assets/icons/mood.svg"
-	import Trash from "../../assets/icons/trash.svg"
-	import MdArrowDropDown from 'svelte-icons/md/MdArrowDropDown.svelte'
-	import MdClose from 'svelte-icons/md/MdClose.svelte'
-
+	import Dots from "../../assets/icons/more-vert.svg";
+	import Lock from "../../assets/icons/lock-clock.svg";
+	import Attachment from "../../assets/icons/attachment.svg";
+	import Link from "../../assets/icons/link.svg";
+	import Image from "../../assets/icons/image.svg";
+	import Color from "../../assets/icons/color-text.svg";
+	import Drive from "../../assets/icons/drive.svg";
+	import Sign from "../../assets/icons/pen.svg";
+	import Smile from "../../assets/icons/mood.svg";
+	import Trash from "../../assets/icons/trash.svg";
+	import MdArrowDropDown from 'svelte-icons/md/MdArrowDropDown.svelte';
+	import MdClose from 'svelte-icons/md/MdClose.svelte';
+	import { update } from "../../stores/appState";
 
 	 let newMail = $appState.openDraft || {
 		to:"",	
@@ -33,20 +33,23 @@
 
 	const handleCloseEditor = () => {
 		if ($appState.isDirty && newMail.isDraft === true && newMail.id !== $appState.openDraft?.id){
-			$appState.drafts = [...$appState.drafts, newMail]
+			$appState.drafts = [...$appState.drafts, newMail];
+			
 			}
-		else if($appState.isDirty && newMail.isDraft === true)
+		else if($appState.isDirty && newMail.isDraft === true);
 		{	
-			let original = $appState.drafts.findIndex(el => el.id === newMail.id)
-			$appState.drafts.splice(original, 1, newMail)
-			$appState.drafts = [...$appState.drafts]
+			let original = $appState.drafts.findIndex(el => el.id === newMail.id);
+			$appState.drafts.splice(original, 1, newMail);
+			$appState.drafts = [...$appState.drafts];
+			
 		}
 		
 		$appState.isWriting = false;
 		$appState.openDraft =null;
 		$appState.isDirty=false;
 		$appState.draftsSorted = $appState.sortByDate($appState.drafts.slice());
-	
+		update({...$appState});
+		
 	}
 
 	const handleSubmit = e => {
@@ -62,6 +65,7 @@
 			$appState.isDirty=false;
 			$appState.openDraft = null;
 			handleClear(newMail.id);
+			update({...$appState});
 			
 		 }, 1000)	
 	}
@@ -73,8 +77,8 @@
 		$appState.isWriting = false;
 		$appState.isDirty=false;
 		$appState.openDraft =null;
-		
 
+		update({...$appState});
 	}
 
 	const onFocus = () => focusShow = true;
@@ -85,7 +89,7 @@
 		$appState.drafts.splice(target, 1);
 		$appState.drafts = [...$appState.drafts];
 		$appState.draftsSorted = $appState.sortByDate($appState.drafts.slice());
-	
+		update({...$appState});
 	}	
 	
 </script>

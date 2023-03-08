@@ -1,5 +1,6 @@
 <script>
 	import appState from "../../stores/appState"
+	import { update } from "../../stores/appState";
 	export let content = {};
 	let isSelected = false;
 	let isLabeled = false;
@@ -19,6 +20,8 @@
 
 	const handleStar = () => {
 		content.isStarred = !content.isStarred
+
+		update({...$appState});
 	}
 
 	const handleOpen = (e) => {
@@ -28,7 +31,7 @@
 
 		$appState.displayedMail = $appState.sent.find( el => el.id === id);
 		console.log($appState.displayedMail)
-	
+		update({...$appState});
 	}
 
 	const handleDelete = () => {
@@ -41,6 +44,7 @@
 
 		$appState.sent = [...$appState.sent ]
 		$appState.sentSorted = $appState.sent.slice();
+		update({...$appState});
 		
 		
 }
@@ -63,7 +67,7 @@
 		<p> <strong >{content?.object || ""}</strong> - {content?.body?.length>=70? `${content?.body.slice(0,70)}...` : content?.body || ""}</p>
 	</div>
 	{#if !isHovered}
-		<p>{content?.date.toString().slice(4,10)}</p>
+		<p>{new Date(content?.date).toDateString().slice(4,10)}</p>
 		{:else}
 		<div class="icons__container">
 			<button class=icon-box>

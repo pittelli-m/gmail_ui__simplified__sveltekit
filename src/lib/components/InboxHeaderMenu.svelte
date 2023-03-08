@@ -8,11 +8,13 @@
 	import CheckboxChecked from "../../assets/icons/checkbox--checked.svg"
 	import Refresh from "../../assets/icons/refresh.svg"
 	import Dots from "../../assets/icons/more-vert.svg"
+	import { update } from "../../stores/appState";
 
 	let checked = false
 
 	const handleSort = () => {
 	 $appState.isSorted = !$appState.isSorted
+	 update({...$appState});
 	}
 </script>
 

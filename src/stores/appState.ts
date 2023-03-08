@@ -1,4 +1,4 @@
-import { writable } from "svelte/store";
+import { writable, get } from "svelte/store";
 
 const setMail = async () => {
 	const res = await fetch("https://jsonplaceholder.typicode.com/users");
@@ -20,8 +20,9 @@ const setMail = async () => {
 
 	return baseMail;
 };
-
+// @ts-ignore
 const sortByDate = data => {
+	// @ts-ignore
 	data = data.sort((a, b) => {
 		const valueA = new Date(a.date).getTime();
 		const valueB = new Date(b.date).getTime();
@@ -31,7 +32,7 @@ const sortByDate = data => {
 	return data;
 };
 
-const appState = writable({
+const initialState = {
 	isWriting: false,
 	searchTerm: "",
 	isDirty: false,
@@ -49,11 +50,33 @@ const appState = writable({
 	menuSelected: "inbox",
 	id: Math.round(Math.random() * 99999),
 	inboxShown: "inbox",
-	sortByDate,
+
 	openDraft: null,
 	displayedMail: null,
 	isSearching: false,
-});
+};
+
+const isBrowser = typeof window !== "undefined";
+
+const localState = isBrowser && localStorage.getItem("state");
+
+if (!localState) {
+	// @ts-ignore
+	isBrowser && localStorage.setItem("state", JSON.stringify(initialState));
+}
+// @ts-ignore
+const state = localState ? await JSON.parse(localState) : initialState;
+
+const stored = writable(state);
+
+const appState = writable({ ...state, sortByDate });
+
+// @ts-ignore
+export const update = state => {
+	const updatedState = state;
+	stored.update(() => updatedState); //sets the whole state to whatever is passed in as updatedState
+	localStorage.setItem("state", JSON.stringify(updatedState));
+};
 
 export default appState;
 

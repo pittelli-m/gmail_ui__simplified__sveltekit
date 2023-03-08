@@ -1,5 +1,6 @@
 <script>
 	import appState from "../../stores/appState";
+	import { update } from "../../stores/appState";
 	let focused = false
 	const onFocus = () => focused = true;
 	const onBlur =() => focused =false;
@@ -11,11 +12,15 @@
 	$: $appState.searchTerm ? $appState.isSearching = true : $appState.isSearching = false
 	$: $appState.menuSelected ==="sent" ? disabled = true : disabled = false
 
+	
+
 	const filter =() => {
 
 	if ($appState.menuSelected === "sent"){
 		$appState.searchTerm = "";
 		$appState.isSearching = false;
+
+		update({...$appState});
 		return
 	}
 
@@ -41,8 +46,8 @@
 		$appState.filtered = [...filtered];
 		appState.filteredSorted = [...$appState.filtered];
 		
+		update({...$appState});
 
-		$: console.log(filtered);
 	}
 	
 
