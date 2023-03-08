@@ -10,9 +10,7 @@
 	import CheckBox from "../../assets/icons/checkbox--blank.svg";
 	import CheckboxChecked from "../../assets/icons/checkbox--checked.svg";
 	import Star from "../../assets/icons/star.svg";
-	import Starred from "../../assets/icons/starred.svg";
 	import Label from "../../assets/icons/label.svg";
-	import Labeled from "../../assets/icons/labeled.svg";
 	import Snooze from "../../assets/icons/snoozed.svg";
 	import Mail from "../../assets/icons/mail.svg";
 	import Trash from "../../assets/icons/trash.svg";
@@ -20,6 +18,7 @@
 
 
 	const handleOpen = (e) => {
+		if(e.target.classList.contains("icon-box") || e.target.classList.contains("icon-img")) return
 
 		let id = itemID;
 
@@ -47,13 +46,13 @@
 <article class={`email__card ${isSelected && "email__card--selected"}`} on:click|stopPropagation={(e) => handleOpen(e)} on:mouseenter={() => isHovered = true} on:mouseleave={()=> isHovered=false}>
 	<div class="email__card__left">
 		<button class=icon-box on:click = {	() => isSelected = !isSelected	}>
-			<img src={isSelected ? CheckboxChecked : CheckBox} alt="">
+			<img src={isSelected ? CheckboxChecked : CheckBox} alt="" class="icon-img">
 		</button>
-		<button class=icon-box on:click = {	()=> handleStar()}>
-			<img src={content?.isStarred ? Starred : Star} alt="">
+		<button class=icon-box>
+			<img src={Star} alt="" class="icon-img">
 		</button>
-		<button class=icon-box on:click = {	() => isLabeled = !isLabeled	}>
-			<img src={isLabeled ? Labeled : Label} alt="">
+		<button class=icon-box>
+			<img src={Label} alt="" class="icon-img">
 		</button>
 		<p class={"counterpart"}>{content?.to || ""}</p>	
 	</div>
@@ -68,7 +67,7 @@
 				<img src={Archive} alt="" class="icon-img">		
 			</button>
 			<button class=icon-box on:click={handleDelete}>
-				<img src={Trash} alt="" class="icon-img">
+				<img src={Trash} alt="" class="icon-img" on:click={handleDelete}>
 			</button>
 			<button class=icon-box>
 				<img src={Mail} alt="" class="icon-img">
