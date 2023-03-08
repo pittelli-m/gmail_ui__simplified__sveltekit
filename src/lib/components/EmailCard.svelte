@@ -1,5 +1,6 @@
 <script>
 	import appState from "../../stores/appState"
+	import { update } from "../../stores/appState";
 	export let content = {};
 	export let draggable;
 	export let itemID;
@@ -22,6 +23,7 @@
 	const handleStar = () => {
 		content.isStarred = !content.isStarred
 		$appState.starred = $appState.allMail.filter(el => el.isStarred === true);
+		update({...$appState});
 		
 	}	
 
@@ -39,6 +41,7 @@
 
 		$appState.isWriting = true
 		$appState.openDraft = content;
+		update({...$appState});
 	}
 
 
@@ -53,7 +56,7 @@
 		value === 1  ? $appState.allMail = [...items] : $appState.drafts = [...items]
 		$appState.allMailSorted = $appState.allMail.slice();
 		$appState.draftsSorted = $appState.drafts.slice();
-		
+		update({...$appState});
 
 	}
 
@@ -77,7 +80,7 @@
 		<p> <strong class={content.isRead && "lightText"}>{content?.object || ""}</strong> - {content?.body?.length>=70? `${content?.body.slice(0,70)}...` : content?.body || ""}</p>
 	</div>
 	{#if !isHovered}
-		<p>{content?.date.toString().slice(4,10)}</p>
+		<p>{new Date(content?.date).toDateString().slice(4,10)}</p>
 		{:else}
 		<div class="icons__container">
 			<button class=icon-box>

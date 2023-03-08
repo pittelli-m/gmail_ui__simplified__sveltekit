@@ -1,5 +1,6 @@
 <script>
 	import appState from "../../stores/appState"
+	import { update } from "../../stores/appState"
 	import Inbox from "../../assets/icons/inbox.svg"
 	import InboxSelected from "../../assets/icons/inbox_selected.svg"
 	import Social from "../../assets/icons/social.svg"
@@ -7,23 +8,27 @@
 	import Tag from "../../assets/icons/tag.svg"
 	import TagSelected from "../../assets/icons/tag_selected.svg"
 
+	const handleClick = (str) => {
+		$appState.inboxShown = str
+		update({...$appState});
+	}
+
 </script>
 
-
 <div class="inbox__header__nav">
-	<div class="inbox__header__nav__tab" on:click={() => $appState.inboxShown = "inbox"}>
+	<div class="inbox__header__nav__tab" on:click={() => handleClick("inbox")}>
 		<div class={`inbox__header__nav__tab__inner ${$appState.inboxShown === "inbox" && "inbox__header__nav__tab__inner--selected"}` }>
 			<img src={$appState.inboxShown === "inbox" ? InboxSelected: Inbox} alt="">
 			<p>Principale</p>	
 		</div>
 	</div>
-	<div class="inbox__header__nav__tab" on:click={() => $appState.inboxShown = "promo"}>
+	<div class="inbox__header__nav__tab" on:click={() => handleClick("promo")}>
 		<div class={`inbox__header__nav__tab__inner ${$appState.inboxShown === "promo" && "inbox__header__nav__tab__inner--selected"}`}>
 			<img src={$appState.inboxShown === "promo" ?TagSelected:Tag} alt="">
 			<p>Promozioni</p>	
 		</div>
 	</div>
-	<div class="inbox__header__nav__tab" on:click={() => $appState.inboxShown = "social"}>
+	<div class="inbox__header__nav__tab" on:click={() => handleClick("social")}>
 		<div class={`inbox__header__nav__tab__inner ${$appState.inboxShown === "social" && "inbox__header__nav__tab__inner--selected"}`}>
 			<img src={$appState.inboxShown === "social" ? SocialSelected: Social} alt="">
 			<p>Social</p>	

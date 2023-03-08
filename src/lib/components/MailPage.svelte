@@ -2,6 +2,7 @@
 	export let mail;
 	let items;
 	import appState from "../../stores/appState";
+	import { update } from "../../stores/appState";
 	import ChevRight from "../../assets/icons/chevron-right.svg";
 	import ChevLeft from "../../assets/icons/chevron-left.svg";
 	import Keyboard from "../../assets/icons/keyboard.svg";
@@ -27,6 +28,7 @@
 	const handleStar = () => {
 		mail.isStarred = !mail.isStarred
 		$appState.starred = $appState.allMail.filter(el => el.isStarred === true);
+		update({...$appState});
 		
 		
 	}	
@@ -46,6 +48,7 @@
 		items = [...items];
 
 		$appState.displayedMail = null;
+		update({...$appState});
 		
 
 	}

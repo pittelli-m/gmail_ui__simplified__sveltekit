@@ -1,5 +1,6 @@
 <script>
 	import appState from "../../stores/appState";
+	import { update } from "../../stores/appState";
 	let isOpen = true;
 	import Edit from "../../assets/icons/edit.svg";
 	import Inbox from "../../assets/icons/inbox.svg";
@@ -23,6 +24,8 @@
 			$appState.searchTerm = "";
 			$appState.isSearching=false;
 			$appState.menuSelected=str
+
+			update({...$appState});
 		}
 		
 </script>
