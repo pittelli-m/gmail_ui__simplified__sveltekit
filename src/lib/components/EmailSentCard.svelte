@@ -50,6 +50,7 @@
 }
 
 </script>
+<li>
 <article class={`email__card ${isSelected && "email__card--selected"}`} on:click|stopPropagation={(e) => handleOpen(e)} on:mouseenter={() => isHovered = true} on:mouseleave={()=> isHovered=false}>
 	<div class="email__card__left">
 		<button class=icon-box on:click = {	() => isSelected = !isSelected	}>
@@ -86,6 +87,7 @@
 	{/if}
 	
 </article>
+</li>
 
 <style lang="scss">
 	.email__card{

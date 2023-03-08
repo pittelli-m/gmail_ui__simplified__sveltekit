@@ -3,6 +3,9 @@
 	import { update } from "../../stores/appState";
 	export let content = {};
 	export let draggable;
+	export let dragstart;
+	export let dragover;
+	export let drop;
 	export let itemID;
 	let items;
 
@@ -60,9 +63,13 @@
 
 	}
 
+
+	
+
 </script>
 
-<article class={`email__card ${isSelected && "email__card--selected"} ${content.isRead && "email__card--read"}`} on:click|stopPropagation={(e) => handleOpen(e)} draggable={draggable} on:mouseenter={() => isHovered = true} on:mouseleave={()=> isHovered=false}>
+<li draggable={draggable} on:dragstart={dragstart} on:drop={drop} on:dragover={dragover}>
+<article class={`email__card ${isSelected && "email__card--selected"} ${content.isRead && "email__card--read"}`} on:click|stopPropagation={(e) => handleOpen(e)}  on:mouseenter={() => isHovered = true} on:mouseleave={()=> isHovered=false}>
 	<div class="email__card__left">
 		<button class=icon-box on:click = {	() => isSelected = !isSelected	}>
 			<img src={isSelected ? CheckboxChecked : CheckBox} alt="" class="icon-img">
@@ -99,7 +106,7 @@
 	{/if}
 	
 </article>
-
+</li>
 
 <style lang="scss">
 	.email__card{
