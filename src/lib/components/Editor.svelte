@@ -2,6 +2,7 @@
 	let isOpen = true;
 	let focusShow = false;
 	import appState from "../../stores/appState";
+	import Dropzone from "svelte-file-dropzone";
 	import Close from "../../assets/icons/close.svg";
 	import Minimize from "../../assets/icons/minimize.svg";
 	import Dots from "../../assets/icons/more-vert.svg";
@@ -91,6 +92,20 @@
 		$appState.draftsSorted = $appState.sortByDate($appState.drafts.slice());
 		update({...$appState});
 	}	
+
+
+	let files = {
+   	 	accepted: [],
+   		rejected: []
+  };
+
+  const handleFilesSelect = e => {
+    const { acceptedFiles, fileRejections } = e.detail;
+    	files.accepted = [...files.accepted, ...acceptedFiles];
+		newMail.files = files.accepted;
+
+    	files.rejected = [...files.rejected, ...fileRejections];
+  }
 	
 </script>
 <form class={`editor ${isOpen && "editor--open"}`} on:submit = {(e) => handleSubmit(e)}>
@@ -121,7 +136,9 @@
 </div>
 </div>
 <div class="editor__textarea">
+	<Dropzone on:drop={handleFilesSelect} containerStyles={"height:100%;"} noClick disableDefaultStyles>
 	<textarea name="" id="" bind:value={newMail.body}></textarea>
+	</Dropzone>
 	{#if newMail.files.length > 0}
 		<div class="editor__attachments__container">
 			{#each newMail.files as file}
@@ -271,6 +288,8 @@
 			flex: 1;
 			outline: none;
 			position: relative;
+			height: 100%;
+			background-color: #fff;
 			textarea{
 				height: 100%;
 				width: 100%;
@@ -378,6 +397,9 @@
 		}
 	}
 		
+	}
+	.dropzone{
+		height:100%
 	}
 	
 </style>
