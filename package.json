@@ -24,6 +24,7 @@
 	"dependencies": {
 		"@fontsource/lexend-deca": "^4.5.14",
 		"@fontsource/roboto": "^4.5.8",
+		"svelte-file-dropzone": "^1.0.0",
 		"svelte-icons": "^2.1.0",
 		"svelte-preprocess": "^5.0.1"
 	}

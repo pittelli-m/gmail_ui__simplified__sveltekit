@@ -1,22 +1,32 @@
 
 <script>
+	import appState from "../../stores/appState";
 	import Searchbar from "./Searchbar.svelte";
 	import MdMenu from 'svelte-icons/md/MdMenu.svelte'
 	import MdHelpOutline from 'svelte-icons/md/MdHelpOutline.svelte'
 	import MdSettings from 'svelte-icons/md/MdSettings.svelte'
 	import MdApps from 'svelte-icons/md/MdApps.svelte'
 	import GmailLogo from "../../assets/icons/gmail.svg"
-	import "@fontsource/lexend-deca"
+	import { update } from "../../stores/appState";
+	
 
 	let isOpen = true
 	const handleToggle =  () => isOpen = !isOpen
-
+	const handleClick = () => {
+		$appState.menuSelected="inbox"
+		$appState.displayedMail=null;
+		$appState.isSorted=false;
+		$appState.searchTerm = "";
+		$appState.isSearching=false;
+		
+		update({...$appState});
+	}
 </script>
 
 <nav class="header__nav"> 
 	<div class="nav__left">
 		<button class="nav__toggle-box icon-box icon-box--lg" on:click={handleToggle}><MdMenu/></button>
-		<div class="nav__logo-box"> <img src={GmailLogo} alt="gmail company logo"/> Gmail</div>
+		<a class="nav__logo-box" href="/" on:click={handleClick}> <img src={GmailLogo} alt="gmail company logo"/> Gmail</a>
 	</div>
 	
 	<div class="nav__searchbar">
@@ -34,6 +44,8 @@
 </nav>
 
 <style lang="scss">
+	@import "@fontsource/lexend-deca";
+	
 	.header__nav{
 		padding: 1rem;
 		padding-right: 1.6rem;

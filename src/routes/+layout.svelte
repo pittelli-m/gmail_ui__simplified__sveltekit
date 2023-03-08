@@ -7,6 +7,7 @@
 	import Editor from "$lib/components/Editor.svelte";
 	import InboxHeader from "$lib/components/InboxHeader.svelte";
 	import InboxHeaderMenu from "$lib/components/InboxHeaderMenu.svelte";
+	import MailPage from "$lib/components/MailPage.svelte";
 
 </script>
 
@@ -18,17 +19,22 @@
 	<AsideLeft/>
 	<main class="main__container">
 		<div class="main__app">
-				<div class="app__header">
-					<div class="app__header__menu">
-						<InboxHeaderMenu/>
-					</div>
-					<div class="app__header__nav">
-					<InboxHeader/>
-					</div>
+			{#if $appState.displayedMail}
+			<MailPage mail={$appState.displayedMail}/>
+			{:else}
+			<div class="app__header">
+				<div class="app__header__menu">
+					<InboxHeaderMenu/>
 				</div>
-				<div class="app__body">
-					<slot/>
+				<div class="app__header__nav">
+				<InboxHeader/>
 				</div>
+			</div>
+			<div class="app__body">
+				<slot/>
+			</div>
+			{/if}
+				
 		</div>
 	</main>
 	<AsideRight/>
