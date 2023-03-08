@@ -54,9 +54,3 @@
 		list-style: none;
 	}
 </style>
-
-
-<!-- 
- 	  on:dragstart={() => handleDragStart({detail: {index}})}
-      on:dragover={(e) => handleDragOver(e, index)}
-      on:drop={handleDrop} -->

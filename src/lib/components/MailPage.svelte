@@ -23,7 +23,11 @@
 	import Starred from "../../assets/icons/starred.svg";
 	import Undo from "../../assets/icons/undo.svg";
 	import Forward from "../../assets/icons/forward.svg";
-	import MdClose from 'svelte-icons/md/MdClose.svelte'
+	import MdInsertDriveFile from 'svelte-icons/md/MdInsertDriveFile.svelte';
+	import MdBlock from 'svelte-icons/md/MdBlock.svelte';
+
+
+	
 
 	const handleStar = () => {
 		mail.isStarred = !mail.isStarred
@@ -54,7 +58,7 @@
 	}
 </script>
 
-<div>
+<div class="mail__page">
 	<div class="mail__header">
 		<div class="mail__header--left">
 			<button class="icon-box btn-back" on:click={() => $appState.displayedMail = null }> <img src={Back} alt=""></button>
@@ -144,13 +148,19 @@
 
 			{#if mail.files?.length > 0}
 				<div class="mail__content__attachments__container">
+					<h4>Attachments</h4>	
 					{#each mail.files as file}
-					<div class="mail__content__attachments__item">
-						<p>{file.name}</p>
-						<button type="button" class="icon-box icon-box--square"> 
-							<MdClose/>
-						</button>
-					</div>	
+					<div class="mail__content__attachments__item__wrapper">
+						<div class="mail__content__attachments__item">
+							<div class="mail__content__attachments__item__main" >
+								<MdBlock/>
+							</div>
+							<div class="mail__content__attachments__item__footer" >
+								<MdInsertDriveFile/>
+								<p class="mail__content__attachments__item__name">{file.name?.slice(0,29) || file.path.slice(0,29)}</p>
+							</div>
+						</div>	
+					</div>
 					{/each}
 				</div>
 			{/if}
@@ -171,6 +181,10 @@
 </div>
 
 <style lang="scss">
+	.mail__page{
+		max-height: 91vh;
+		overflow-y: auto;
+	}
 	.mail__header{
 		padding: 1rem 0;
 		display: flex;
@@ -225,6 +239,7 @@
 
 	.mail__content{
 		padding: 1.4rem;
+		max-width: 100%;
 		&__head{
 			margin-bottom: 3rem;
 
@@ -322,28 +337,79 @@
 				width: 2rem;}
 			}
 		&__attachments{
+		
 		&__container{
 			margin-top: 2rem;
-			display: flex;
-			flex-wrap: wrap;
-			gap: .4rem;
+			border-top: .01rem solid rgba(0,0,0,.2);
+			padding-top: 3rem;
+			display: grid;
+			grid-template-columns: repeat(4, max-content);
+			column-gap: 3rem;
+			max-width: 100%;
+			max-height: 40vh;
+			overflow-y: auto;
+			
+			h4{
+				grid-column: span 4;
+				margin-bottom: 3rem;
+			}
 		}
 		&__item{
 			display: flex;
-			align-items: center;
+			flex-direction: column;
 			justify-content: space-between;
-			cursor: pointer;
-			color: var(--color-primary);
-			text-decoration: underline;
-			background-color: var(--color-input);
-			padding-left: 1rem;
+			height: 15rem;
+			width: 20rem;
+			max-height: 100%;
+			border-radius: .4rem;
+			user-select: none;
+			
 
-			button{
+			&__wrapper{
+				margin-bottom: 2rem;
+				cursor: pointer;
+				height: 15rem;
+				width: 20rem;
+				font-size: 1.2rem;
+				box-shadow: .5rem .5rem 1.5rem 0 rgba(0,0,0,.4);
+				clip-path: polygon(0 0, 100% 0, 100% 92%, 97% 95%, 91% 100%, 0 100%);
+				background-color: rgba(0,0,0,.01);
+				&:hover{
+				box-shadow: 0.7rem 1rem 2rem 0 rgba(0,0,0,.45);
+			}
+			}
+			&__main{
+				height: 100%;
+				width:100%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
 				:global(svg){
-					height: 1.4rem;
-					width: 1.4rem;
-					fill: var(--color-primary);
+					fill: var(--color-text-light);
+					height:7rem;
+					width: 7rem;
 				}
+				
+			}
+			&__name{
+						font-weight: 500;
+						color: var(--color-text-light);
+				}
+			&__footer{
+				display: flex;
+				align-items: center;
+				gap: .5rem;
+				background-color: var(--color-background-tab);
+				padding: .5rem;
+				max-height: 4rem;
+				white-space: nowrap;
+				overflow: hidden;
+				:global(svg){
+					fill: var(--color-red);
+					height: 2rem;
+					width: 2rem;
+				}
+				
 			}
 		}
 	}

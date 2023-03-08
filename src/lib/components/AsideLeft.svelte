@@ -16,7 +16,13 @@
 	import Expand from "../../assets/icons/chevron-down.svg";
 	import MdAdd from 'svelte-icons/md/MdAdd.svelte'
 
-	// TODO ADD TOREAD ARRRAY
+
+	let inboxToRead;
+	let starredToRead;
+
+$: inboxToRead = $appState.allMail.filter(el => el.isRead === false).length;
+$: starredToRead = $appState.starred.filter(el => el.isRead === false).length;
+
 
 		const handleUpdate = str => {
 			$appState.displayedMail=null;
@@ -39,12 +45,12 @@
 		<a class={`aside--left__menu__item ${$appState.menuSelected === "inbox" ? "aside--left__menu__item--selected" : "" }`} id="inbox" on:click={()=>handleUpdate("inbox")} href="/">
 			<img src={$appState.menuSelected === "inbox" ? InboxSelected : Inbox} alt=""/>
 			<h4>Posta in Arrivo</h4>
-			<p>{$appState.allMail.map(el => el.isRead === false).length>0 ?$appState.allMail.map(el => el.isRead === false).length : ""}</p>
+			<p>{inboxToRead ? inboxToRead : ""}</p>
 		</a>
 		<a class={`aside--left__menu__item ${$appState.menuSelected === "starred" ? "aside--left__menu__item--selected" : "" }`} id="starred" on:click={()=>handleUpdate("starred")} href="/starred">
 			<img src={$appState.menuSelected === "starred" ? StarSelected : Star} alt=""/>
 			<h4>Speciali</h4>
-			<p>{$appState.starred.length>0 ? $appState.starred.length : ""}</p>
+			<p>{starredToRead ? starredToRead : ""}</p>
 			
 		</a>	
 		<a class={`aside--left__menu__item ${$appState.menuSelected === "snoozed" ? "aside--left__menu__item--selected" : "" }`} id="snoozed" on:click={()=>handleUpdate("snoozed")} href="/snoozed">
@@ -54,7 +60,6 @@
 		<a class={`aside--left__menu__item ${$appState.menuSelected === "sent" ? "aside--left__menu__item--selected" : "" }`} id="sent" on:click={()=>handleUpdate("sent")} href="/sent">
 			<img src={$appState.menuSelected === "sent" ? SentSelected : Sent} alt=""/>
 			<h4>Inviati</h4>
-			<p>{$appState.sent.length > 0? $appState.sent.length : ""}</p>
 			
 		</a>
 		<a class={`aside--left__menu__item ${$appState.menuSelected === "drafts" ? "aside--left__menu__item--selected" : "" }`} id="drafts" on:click={()=>handleUpdate("drafts")} href="/drafts">

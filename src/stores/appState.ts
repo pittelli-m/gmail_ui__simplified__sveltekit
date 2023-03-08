@@ -48,7 +48,6 @@ const initialState = {
 	filteredSorted: [],
 	isSorted: false,
 	menuSelected: "inbox",
-	id: Math.round(Math.random() * 99999),
 	inboxShown: "inbox",
 
 	openDraft: null,
